@@ -1,3 +1,6 @@
+# Example of ProfileController
+
+````
 /**
 * @ApiDoc(
 *  resource=true,
@@ -18,3 +21,4 @@ public function varnishAction()
 
     return '';
 }
+````
