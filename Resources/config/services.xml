@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<container xmlns="http://symfony.com/schema/dic/services"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
+
+    <services>
+        <service id="varnish.security.authentication.provider"
+            class="DonkeyCode\VarnishBundle\Security\Authentication\Provider\VarnishProvider"
+            public="false"
+        >
+            <argument /> <!-- User Provider -->
+        </service>
+
+        <service id="varnish.security.authentication.listener"
+            class="DonkeyCode\VarnishBundle\Security\Firewall\VarnishListener"
+            public="false"
+        >
+            <argument type="service" id="security.token_storage"/>
+            <argument type="service" id="security.authentication.manager" />
+        </service>
+
+        <service id="varnish.httpcache.tag_listener" class="DonkeyCode\VarnishBundle\Listener\HttpCacheTagListener">
+            <argument type="service" id="fos_http_cache.http.symfony_response_tagger" on-invalid="null" />
+            <argument type="service" id="fos_http_cache.cache_manager" on-invalid="null" />
+            <tag name="jms_serializer.event_listener" event="serializer.pre_serialize" method="onPreSerialize" />
+            <tag name="kernel.event_listener" event="rest_cget" method="onRestCGet" />
+            <tag name="kernel.event_listener" event="kernel.response" method="onKernelResponse" />
+
+            <!-- Automatically tagged service -->
+        </service>
+
+        <service id="varnish.conditional_cache.annotation_reader" class="DonkeyCode\VarnishBundle\Annotation\Driver\ConditionalMaxAgeAnnotationDriver">
+            <argument type="service" id="annotation_reader" />
+            <argument type="service" id="security.authorization_checker" />
+            <tag name="kernel.event_listener" event="kernel.response" method="onKernelResponse" />
+            <tag name="kernel.event_listener" event="kernel.controller" method="onKernelController" />
+        </service>
+
+        <service id="varnish.invalidate_tag.annotation_reader" class="DonkeyCode\VarnishBundle\Annotation\Driver\InvalidateTagAnnotationDriver">
+            <argument type="service" id="annotation_reader" />
+            <argument type="service" id="fos_http_cache.cache_manager" on-invalid="null" />
+            <tag name="kernel.event_listener" event="kernel.response" method="onKernelResponse" />
+            <tag name="kernel.event_listener" event="kernel.controller" method="onKernelController" />
+        </service>
+    </services>
+</container>

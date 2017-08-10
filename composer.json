@@ -1,0 +1,14 @@
+{
+    "name": "donkeycode/varnish-bundle",
+    "description": "A varnish cache management to cache variant user group",
+    "type": "symfony-bundle",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Cedric LOMBARDOT",
+            "email": "cedric.lombardot@gmail.com"
+        }
+    ],
+    "minimum-stability": "dev",
+    "require": {}
+}
