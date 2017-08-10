@@ -1,3 +1,6 @@
+# Sample of default.vcl.erb with FosHttpCacheBundle and varnish 4
+
+````
 vcl 4.0;
 
 import curl;
@@ -260,3 +263,4 @@ sub fos_refresh_recv {
         set req.hash_always_miss = true;
     }
 }
+````
