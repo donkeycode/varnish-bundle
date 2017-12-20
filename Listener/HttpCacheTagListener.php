@@ -25,7 +25,7 @@ class HttpCacheTagListener implements EventSubscriberInterface
     }
 
     public function onPreSerialize(PreSerializeEvent $event)
-    {        
+    {
         if (!$this->responseTagger) {
             return;
         }
@@ -61,7 +61,6 @@ class HttpCacheTagListener implements EventSubscriberInterface
         $this->cacheManager->invalidateTags(array(
             "search"
         ));
-        
     }
 
     public function onRestCGet(GenericEvent $event)
@@ -84,7 +83,9 @@ class HttpCacheTagListener implements EventSubscriberInterface
 
     private function getClassTag($object) : string
     {
-        return str_replace('\\', '_', get_class($object));
+        $cl = str_replace('\\', '_', get_class($object));
+
+        return strstr($cl, 'Propel') ? explode('Propel_', $cl)[1] : $cl;
     }
 
     private function getObjectTag(ActiveRecordInterface $object) : string
