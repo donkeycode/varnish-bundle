@@ -76,7 +76,7 @@ class HttpCacheTagListener implements EventSubscriberInterface
 
         $this->responseTagger->addTags($this->classTagged);
 
-        if (count($this->objectsTagged) < 500) {
+        if (count($this->objectsTagged) < 200) {
             $this->responseTagger->addTags($this->objectsTagged);
         }
     }
